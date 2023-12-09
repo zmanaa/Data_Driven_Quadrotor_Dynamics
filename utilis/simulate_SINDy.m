@@ -1,23 +1,24 @@
-function [t_out, states_out, ctrl, ref_traj] = simulate_dynamics(traj_type)
-% SIMULATE_DYNAMICS: simulate the planar dynamics for the 2D quadrotor.
+function [t_out, states_out, ctrl, ref_traj] = simulate_SINDy(traj_type)
+% SIMULATE_SINDY: simulating the discovered dynamics for the 2D quadrotor.
 %   INPUTS:
 %       - traj_type: string defining the desired trajectory
 %                       {'line', 'sine', 'step', 'diamond'}
 %
-% Copyright April, 2023, All Rights Reserved.
+% Copyright May, 2023, All Rights Reserved.
 % Code by Zeyad M. Manaa.
 %
 
 params = get_quad_params;
 
 %%% DEFS
+
 T_TOTAL     = 10;             % Total simulated time
-T_STEP      = 0.01;          % this determines the time step at which the solution is given
+T_STEP      = 0.01;          % This determines the time step at which the solution is given
 T_OUT       = 0:T_STEP:T_TOTAL;
 TRAJ_TYPE   = traj_type;
 NOISE_FLAG  = 0;    
 
-% make trajectory
+% Make trajectory
 traj_indx = 1;
 switch TRAJ_TYPE
     case 'step'
@@ -51,7 +52,6 @@ states(:,1) = [des_states(1:2,1);
                 0];
 
 
-tic
 % Run simulation
 for i = 1:length(T_OUT)
 
@@ -65,7 +65,7 @@ for i = 1:length(T_OUT)
                           des_states(:, i), ...
                           params);
 
-    f = @(time, states) planar_quad_eom(time, states, [u1(i), u2(i)], params);
+    f = @(time, states) planar_quad_discovered_eom(time, states, [u1(i), u2(i)], params);
     
     k1 = f(T_OUT(i),states);
     k2 = f(T_OUT(i)+T_STEP/2,states+k1*T_STEP/2);
@@ -74,12 +74,11 @@ for i = 1:length(T_OUT)
     k = (1/6)*(k1 + 2*k2 + 2*k3 + k4);
     states = states + k*T_STEP;
 end
-sim_end_time = toc;
 
+
+sim_end_time = toc;
 states_out = states_out';
 t_out = T_OUT';
 ref_traj = des_states';
 ctrl = [u1', u2'];
-
-disp(['simualtion total time: ', num2str(sim_end_time), ' sec']);
 end

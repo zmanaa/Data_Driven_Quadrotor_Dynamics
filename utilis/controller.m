@@ -4,7 +4,9 @@ function [ U1, U2 ] = controller(state, des_state, params)
 % INPUTS:
 %   - state: The current state of the quad having:
 %       state(1:2) = [y; z]             --- pos 
-%       state(5) = [phi]                --- vel   
+%       state(5) = [phi]              
+% 
+% --- vel   
 %       state(4:5)  = [y_dot; z_dot]    --- vel
 %       state(6) = [phi_dot]            --- phi_dot
 %   - des_state: The desired states are:
