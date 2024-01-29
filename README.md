@@ -1,6 +1,6 @@
 # SINDY-DMD Quadrotor
 This a repository for "__DATA DRIVEN DISCOVERY OF QUADROTOR EQUATIONS OF MOTION USING SPARSE IDENTIFICATION OF NONLINEAR DYNAMICS__" 
-arXiv: https://arxiv.org/abs/2305.16500
+published at: https://arc.aiaa.org/doi/abs/10.2514/6.2024-1308?download=true
 
 ## Installation
 ### For Planar Quadrotor Simulation:
